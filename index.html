@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lamoda | Элегантный шопинг</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-container">
+            <!-- Логотип слева -->
+            <div class="logo" id="logo">
+                <img src="./img/logos.jpg" alt="Lamoda">
+            </div>
+
+            <!-- Обычные вкладки (скрываются на мобильных) -->
+            <div class="header-left">
+                <button class="tab" data-gender="women">Женщинам</button>
+                <button class="tab" data-gender="men">Мужчинам</button>
+            </div>
+
+            <!-- Бургер-иконка справа -->
+            <div class="burger-icon" id="burger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <!-- Корзина на десктопе -->
+            <div class="header-right">
+                <div class="cart-icon-wrapper" id="cart-icon-wrapper">
+                    <i class="fas fa-shopping-cart cart-icon"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Мобильное меню (бургер) -->
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="tab" data-gender="women">Женщинам</button>
+        <button class="tab" data-gender="men">Мужчинам</button>
+        <div class="mobile-cart">
+            <i class="fas fa-shopping-cart cart-icon"></i>
+            <span class="cart-count">0</span>
+            <span>Корзина</span>
+        </div>
+    </div>
+
+    <!-- Кнопка "На главную" (видна только на страницах каталога и товара) -->
+    <div id="back-to-home" class="back-to-home hidden">
+        <i class="fas fa-arrow-left"></i> На главную
+    </div>
+
+    <!-- Модальное окно корзины -->
+    <div id="cart-modal" class="cart-modal hidden">
+        <div class="cart-modal-content">
+            <span class="close-cart">&times;</span>
+            <h2>Корзина</h2>
+            <div class="cart-message" id="cart-message"></div>
+            <div id="cart-items-container"></div>
+            <div class="cart-total">
+                <span>Итого:</span>
+                <span id="cart-total-price">0 ₽</span>
+            </div>
+            <button id="checkout-btn" class="btn-primary-s">Оформить заказ</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно формы заказа -->
+    <div id="checkout-modal" class="cart-modal hidden">
+        <div class="cart-modal-content">
+            <span class="close-checkout">&times;</span>
+            <h2>Оформление заказа</h2>
+            <div class="checkout-message" id="checkout-message"></div>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="phone">Номер телефона</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Адрес доставки</label>
+                    <input type="text" id="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Электронная почта</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="payment-methods">
+                    <h4>Способ оплаты</h4>
+                    <label><input type="radio" name="payment" value="sbp"> СБП</label>
+                </div>
+                <div class="order-summary">
+                    <h3>Ваш заказ</h3>
+                    <div id="order-items-list"></div>
+                    <div class="order-total">
+                        <span>Итого:</span>
+                        <span id="order-total-price">0 ₽</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary-ss">Перейти к оплате</button>
+            </form>
+        </div>
+    </div>
+
+    <main>
+        <!-- Главная страница -->
+        <section id="home-page" class="page">
+            <!-- Блок с акцией -->
+            <div class="hero">
+                <div class="hero-image" style="background-image: url('./img/крос1.jpg');">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <h2>Скидка 50% на летнюю обувь</h2>
+                        <button class="btn-primary">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Заголовок и блок категорий -->
+            <div class="container">
+                <h2 class="section-title">Категории</h2>
+            </div>
+            <div class="categories">
+                <div class="category-item" id="cat-shoes">
+                    <div class="category-overlay"></div>
+                    <div class="category-text">
+                        <span class="category-title">Обувь</span>
+                        <button class="btn-outline category-btn" data-category="shoes">Подробнее</button>
+                    </div>
+                </div>
+                <div class="category-item" id="cat-clothing">
+                    <div class="category-overlay"></div>
+                    <div class="category-text">
+                        <span class="category-title">Одежда</span>
+                        <button class="btn-outline category-btn" data-category="clothing">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Хиты продаж -->
+            <div class="hits">
+                <div class="container">
+                    <h2 class="section-title">Хиты продаж</h2>
+                    <div class="products-grid" id="hits-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Страница каталога (общая для всех фильтров) -->
+        <section id="category-page" class="page hidden">
+            <div class="category-layout">
+                <!-- Левая колонка: фильтры -->
+                <aside class="filter-sidebar">
+                    <h3>Фильтры</h3>
+                    <div class="filter-group">
+                        <h4>Бренд</h4>
+                        <label><input type="checkbox" class="brand-filter" value="Nike"> Nike</label>
+                        <label><input type="checkbox" class="brand-filter" value="Adidas"> Adidas</label>
+                        <label><input type="checkbox" class="brand-filter" value="Puma"> Puma</label>
+                        <label><input type="checkbox" class="brand-filter" value="Reebok"> Reebok</label>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Размер</h4>
+                        <div class="size-filter-container"></div>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Цена</h4>
+                        <input type="number" id="price-min" placeholder="от" min="0">
+                        <input type="number" id="price-max" placeholder="до" min="0">
+                    </div>
+                </aside>
+
+                <!-- Правая колонка: каталог -->
+                <div class="catalog">
+                    <div class="catalog-header">
+                        <h2 id="category-title">Каталог</h2>
+                        <div class="catalog-controls">
+                            <button class="mobile-filter-toggle" id="mobile-filter-toggle">
+                                <i class="fas fa-sliders-h"></i> Фильтр
+                            </button>
+                            <select class="sort-select">
+                                <option value="default">Сортировка</option>
+                                <option value="price-asc">Цена (по возрастанию)</option>
+                                <option value="price-desc">Цена (по убыванию)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="category-products-grid" id="category-products-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Детальная страница товара -->
+        <section id="product-page" class="page hidden">
+            <div class="product-detail">
+                <div class="product-gallery">
+                    <div class="slider-container">
+                        <button class="slider-arrow left" id="slider-prev"><i class="fas fa-chevron-left"></i></button>
+                        <div class="slider-image">
+                            <img id="product-main-image" src="" alt="product">
+                        </div>
+                        <button class="slider-arrow right" id="slider-next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="slider-thumbnails" id="product-thumbnails"></div>
+                </div>
+                <div class="product-info">
+                    <h1 id="product-name">Название товара</h1>
+                    <p class="product-price" id="product-price">0 ₽</p>
+                    <p class="product-brand" id="product-brand">Бренд</p>
+                    <p class="product-description" id="product-description">Описание товара</p>
+                    
+                    <!-- Выбор размера -->
+                    <div class="size-selector">
+                        <h4>Размер</h4>
+                        <div id="size-options"></div>
+                    </div>
+
+                    <!-- Выбор цвета -->
+                    <div class="color-selector">
+                        <h4>Цвет</h4>
+                        <select id="color-options">
+                            <option value="Красный">Красный</option>
+                            <option value="Синий">Синий</option>
+                            <option value="Черный">Черный</option>
+                            <option value="Белый">Белый</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-primary" id="add-to-cart">Добавить в корзину</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="./img/logos.jpg" alt="Lamoda">
+                </div>
+                <div class="footer-support-contacts">
+                    <div class="footer-support">
+                        <h4>Поддержка</h4>
+                        <p>help@lamoda.ru</p>
+                    </div>
+                    <div class="footer-contacts">
+                        <h4>Контакты</h4>
+                        <p>+7 (800) 123-45-67</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-social">
+                <i class="fab fa-telegram-plane"></i>
+                <i class="fab fa-instagram"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
