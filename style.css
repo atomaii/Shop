@@ -31,6 +31,7 @@ body {
 .header-left {
     display: flex;
     gap: 40px;
+    margin-right: 60px;
 }
 
 .tab {
@@ -48,9 +49,8 @@ body {
 }
 
 .logo img {
-    width: 100px;
+    width: 45px;
     display: block;
-    cursor: pointer;
 }
 
 .header-right {
@@ -150,6 +150,7 @@ body {
     padding: 10px;
     border-top: 1px solid #eee;
     font-size: 16px;
+    cursor: pointer;
 }
 
 .mobile-cart .cart-icon {
@@ -871,7 +872,7 @@ body {
 }
 
 .footer-logo img {
-    width: 100px;
+    width: 45px;
 }
 
 .footer-support-contacts {
@@ -919,7 +920,7 @@ body {
         margin: 0;
     }
     .logo img {
-        width: 80px;
+        width: 45px;
     }
     .burger-icon {
         display: flex;
@@ -931,7 +932,7 @@ body {
         display: none;
     }
     .mobile-menu {
-        top: 70px; /* подстройте под свою шапку */
+        top: 60px; /* подстройте под свою шапку */
     }
 
     .mobile-filter-toggle {
